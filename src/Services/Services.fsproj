@@ -1,21 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <WarnOn>3390;$(WarnOn)</WarnOn>
   </PropertyGroup>
-
   <ItemGroup>
+    <Compile Include="DictionaryService.fs" />
     <Compile Include="DbService.fs" />
   </ItemGroup>
-  
   <ItemGroup>
     <PackageReference Include="Npgsql.FSharp" Version="4.1.0" />
   </ItemGroup>
-  
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.fsproj" />
   </ItemGroup>
-
 </Project>

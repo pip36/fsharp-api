@@ -5,7 +5,6 @@ open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
-open Domain.Words
 open CompositionRoot
 
 
@@ -16,7 +15,7 @@ type Startup(configuration: IConfiguration) =
     member _.ConfigureServices(services: IServiceCollection) =
         services.AddControllers() |> ignore
 
-        services.AddSingleton<GameControllerDependencies>({ StartNewGame = startNewGame })
+        AddGameDependencies(services, configuration)
         |> ignore
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

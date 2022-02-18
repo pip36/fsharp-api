@@ -3,17 +3,24 @@ namespace WebApi
 module CompositionRoot =
     open Domain.Words
     open Services
+    open Microsoft.Extensions.DependencyInjection
+    open Microsoft.Extensions.Configuration
 
-    let connectionString =
-        "Host=localhost; Database=testdb; Username=postgres; Password=postgres; Port=5438"
+    type GameDependencies = { StartNewGame: StartNewGame }
 
-    let getActiveGames =
-        DbService.getActiveGames (connectionString)
+    let AddGameDependencies (services: IServiceCollection, configuration: IConfiguration) =
+        let connectionString =
+            configuration.GetConnectionString("Games")
 
-    let storeNewGame =
-        DbService.storeNewGame (connectionString)
+        let getActiveGames =
+            DbService.getActiveGames (connectionString)
 
-    let startNewGame =
-        Actions.startNewGame getActiveGames storeNewGame
+        let generateAnswer = DictionaryService.getWord
 
-    type GameControllerDependencies = { StartNewGame: StartNewGame }
+        let storeNewGame =
+            DbService.storeNewGame (connectionString)
+
+        let startNewGame =
+            Actions.startNewGame getActiveGames generateAnswer storeNewGame
+
+        services.AddSingleton<GameDependencies>({ StartNewGame = startNewGame })
